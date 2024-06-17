@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        #todo-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        #todo-container h1 {
+            margin: 0 0 20px;
+            font-size: 24px;
+        }
+        #todo-form input, #todo-form select, #todo-form button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #todo-list li {
+            background: #f9f9f9;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-details {
+            display: flex;
+            align-items: center;
+        }
+        .task-details span {
+            margin: 0 10px;
+        }
+        .task-priority {
+            font-weight: bold;
+        }
+        .task-category {
+            font-style: italic;
+            color: #666;
+        }
+        .complete {
+            text-decoration: line-through;
+            color: #999;
+        }
+        .delete-btn, .complete-btn {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+        }
+        .delete-btn {
+            color: red;
+        }
+        .complete-btn {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div id="todo-container">
+    <h1>To-Do List</h1>
+    <form id="todo-form">
+        <input type="text" id="task" placeholder="New Task" required>
+        <input type="date" id="due-date">
+        <select id="priority">
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+        </select>
+        <input type="text" id="category" placeholder="Category">
+        <button type="submit">Add Task</button>
+    </form>
+    <ul id="todo-list"></ul>
+</div>
+
+<script>
+    document.getElementById('todo-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const taskInput = document.getElementById('task');
+        const dueDateInput = document.getElementById('due-date');
+        const priorityInput = document.getElementById('priority');
+        const categoryInput = document.getElementById('category');
+        
+        const task = taskInput.value;
+        const dueDate = dueDateInput.value;
+        const priority = priorityInput.value;
+        const category = categoryInput.value;
+        
+        if (!task) return;
+        
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="task-details">
+                <span class="task-name">${task}</span>
+                <span class="task-due-date">${"dueDate ? Due: ${dueDate} :"}</span>
+                <span class="task-priority">${priority}</span>
+                <span class="task-category">${category}</span>
+            </div>
+            <div>
+                <button class="complete-btn">✔</button>
+                <button class="delete-btn">✖</button>
+            </div>
+        `;
+        
+        document.getElementById('todo-list').appendChild(li);
+        
+        taskInput.value = '';
+        dueDateInput.value = '';
+        priorityInput.value = 'low';
+        categoryInput.value = '';
+        
+        li.querySelector('.delete-btn').addEventListener('click', function() {
+            li.remove();
+        });
+        
+        li.querySelector('.complete-btn').addEventListener('click', function() {
+            li.querySelector('.task-name').classList.toggle('complete');
+        });
+    });
+</script>
+
+</body>
+</html>
